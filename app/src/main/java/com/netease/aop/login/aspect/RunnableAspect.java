@@ -26,11 +26,11 @@ public class RunnableAspect {
     @Around("methodPointCut()")
     public Object jointPoint(ProceedingJoinPoint joinPoint) throws Throwable {
         Log.e(TAG, "RunnableAspect Method Start >>> " + Thread.currentThread().getName());
+        Log.e(TAG, "RunnableAspect Method run >>> " + Log.getStackTraceString(new Throwable()));
+        Log.e(TAG, "RunnableAspect Method run >>> this: " + joinPoint.getThis().getClass() + " target: " + joinPoint.getTarget().getClass());
         joinPoint.proceed();
         Log.e(TAG, "RunnableAspect Method End >>> ");
         return null;
     }
-
-
 
 }

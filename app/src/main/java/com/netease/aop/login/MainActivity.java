@@ -1,8 +1,9 @@
 package com.netease.aop.login;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -11,11 +12,53 @@ import com.netease.aop.login.annotation.LoginCheck;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "netease >>> ";
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(10);
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(10, new NamedThreadFactory());
+
+    public static class NamedThreadFactory implements ThreadFactory {
+
+        /**
+         * 原子操作保证每个线程都有唯一的
+         */
+        private static final AtomicInteger threadNumber = new AtomicInteger(1);
+
+        private final AtomicInteger mThreadNum = new AtomicInteger(1);
+
+        private final String prefix;
+
+        private final boolean daemoThread;
+
+        private final ThreadGroup threadGroup;
+
+        public NamedThreadFactory() {
+            this("hk-threadpool-" + threadNumber.getAndIncrement(), false);
+        }
+
+        public NamedThreadFactory(String prefix) {
+            this(prefix, false);
+        }
+
+
+        public NamedThreadFactory(String prefix, boolean daemo) {
+            this.prefix = !TextUtils.isEmpty(prefix) ? prefix + "-thread-" : "";
+            daemoThread = daemo;
+            SecurityManager s = System.getSecurityManager();
+            threadGroup = (s == null) ? Thread.currentThread().getThreadGroup() : s.getThreadGroup();
+        }
+
+        @Override
+        public Thread newThread(Runnable runnable) {
+            String name = prefix + mThreadNum.getAndIncrement();
+            Thread ret = new Thread(threadGroup, runnable, name, 0);
+            ret.setDaemon(daemoThread);
+            return ret;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

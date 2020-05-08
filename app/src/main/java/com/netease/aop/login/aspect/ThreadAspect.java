@@ -13,7 +13,7 @@
 //
 //    public static final String TAG = "ThreadAspect";
 //
-//    @Pointcut("call(* java.lang.Thread.new(..))")
+//    @Pointcut("execution(* java.lang.Thread.new(..))")
 //    public void methodPointCut() {
 //    }
 //

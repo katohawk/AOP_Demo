@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String TAG = "netease >>> ";
+    private final static String TAG = "MainActivity >>> ";
     private static ExecutorService threadPool = Executors.newFixedThreadPool(10, new NamedThreadFactory());
 
     public static class NamedThreadFactory implements ThreadFactory {
@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
     public void area(View view) {
         Log.e(TAG, "开始跳转到 -> 我的专区 Activity");
         startActivity(new Intent(this, OtherActivity.class));
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                Log.e(TAG,"zhuanqu hehe "+Thread.currentThread().getName());
+                Log.e(TAG, "zhuanqu hehe " + Thread.currentThread().getName());
             }
         }.start();
     }
@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
     public void coupon(View view) {
         Log.e(TAG, "开始跳转到 -> 我的优惠券 Activity");
         startActivity(new Intent(this, OtherActivity.class));
-        new Thread("youhui"){
+        new Thread("youhui") {
             @Override
             public void run() {
                 super.run();
-                Log.e(TAG,"youhui hehe "+Thread.currentThread().getName());
+                Log.e(TAG, "youhui hehe " + Thread.currentThread().getName());
             }
         }.start();
     }
@@ -112,16 +112,28 @@ public class MainActivity extends AppCompatActivity {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                Log.e(TAG,"jifen hehe "+Thread.currentThread().getName());
+                Log.e(TAG, "jifen hehe " + Thread.currentThread().getName());
             }
         });
     }
 
-    static class MyRunnable implements Runnable{
+    static class MyRunnable implements Runnable {
 
         @Override
         public void run() {
-            Log.e(TAG,"MyRunnable hehe "+Thread.currentThread().getName());
+            Log.e(TAG, "MyRunnable hehe " + Thread.currentThread().getName());
         }
+    }
+
+
+    private int mTest = 1;
+    private boolean mIsTest = true;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTest++;
+        mIsTest = !mIsTest;
+        Log.i(TAG, "onResume mTest:" + mTest + " mIsTest:" + mIsTest);
     }
 }

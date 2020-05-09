@@ -26,8 +26,6 @@ dependencies {
     implementation 'org.aspectj:aspectjrt:1.8.14'
 }
 
-// 版本界限：As-3.0.1 + gradle4.4-all （需要配置r17的NDK环境）
-// 或者：As-3.2.1 + gradle4.6-all （正常使用，无警告）
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
@@ -43,6 +41,12 @@ variants.all { variant ->
 
     JavaCompile javaCompile = variant.javaCompile
     javaCompile.doLast {
+        // -showWeaveInfo，输出编织过程信息
+        // -1.8 设置规范1.8，匹配java1.8
+        // -inpath class文件目录或者jar包， 源字节码，需要处理的类
+        // -aspectpath  定义的切面类
+        // -d 存放编辑产生的class文件
+        // -classpath ，所有class文件，源class，java包，编织时需要用到的一些处理类
         String[] args = ["-showWeaveInfo",
                          "-1.8",
                          "-inpath", javaCompile.destinationDir.toString(),

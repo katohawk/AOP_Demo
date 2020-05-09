@@ -38,7 +38,9 @@ https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx
 
 
 
-### 语法
+### 概念
+
+![aspect_oriented_programming_01](./img/aspect_oriented_programming_01.png)
 
 #### 1.JoinPoint
 
